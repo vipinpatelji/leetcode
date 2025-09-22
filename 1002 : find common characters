@@ -1,0 +1,35 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+char** commonChars(char** words, int wordsSize, int* returnSize) {
+    int commonCount[26];
+    for (int i = 0; i < 26; i++) 
+        commonCount[i] = 1000; // large enough number
+    
+    for (int i = 0; i < wordsSize; i++) {
+        int count[26] = {0};
+        for (int j = 0; words[i][j] != '\0'; j++) {
+            count[words[i][j] - 'a']++;
+        }
+        for (int k = 0; k < 26; k++) {
+            if (count[k] < commonCount[k]) {
+                commonCount[k] = count[k];
+            }
+        }
+    }
+    
+    char** res = (char**)malloc(10000 * sizeof(char*)); // enough space
+    int idx = 0;
+    for (int i = 0; i < 26; i++) {
+        while (commonCount[i]-- > 0) {
+            res[idx] = (char*)malloc(2 * sizeof(char));
+            res[idx][0] = 'a' + i;
+            res[idx][1] = '\0';
+            idx++;
+        }
+    }
+    
+    *returnSize = idx;
+    return res;
+}
