@@ -1,0 +1,26 @@
+class Solution {
+public:
+    int maximumPopulation(vector<vector<int>>& logs) {
+        int populationDelta[101] = {0};
+        const int BASE_YEAR = 1950;
+
+        for (auto& log : logs) {
+            int birthYearIndex = log[0] - BASE_YEAR;
+            int deathYearIndex = log[1] - BASE_YEAR;
+            ++populationDelta[birthYearIndex];
+            --populationDelta[deathYearIndex];
+        }
+
+        int currentPopulation = 0, maxPopulation = 0, maxYearIndex = 0;
+
+        for (int yearIndex = 0; yearIndex < 101; ++yearIndex) {
+            currentPopulation += populationDelta[yearIndex];
+            if (currentPopulation > maxPopulation) {
+                maxPopulation = currentPopulation;
+                maxYearIndex = yearIndex;
+            }
+        }
+
+        return maxYearIndex + BASE_YEAR;
+    }
+};
